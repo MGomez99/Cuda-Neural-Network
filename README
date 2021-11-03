@@ -1,0 +1,27 @@
+# cs447 Project 4
+
+
+# How to Run: 
+- 'make cuda' then './main_cu'
+- OR 'nvcc -O3 -o main_cu nn.cu' then './main_cu'
+
+# Implementation and Key Notes:   
+- Network implementation is found in 'nn.cu' and 'nn.h', utility functions are in 'util.h'
+- CUDA is fully implemented and used for almost all calculations and can be shown in the cuda_fn.h files 
+- Highest Training accuracy achieved is ~88%, and proof is shown in 'test_results.png'
+- The number of epochs can be changed in the 'defines_and_includes.h' file as well, 70% accuracy is usually reached by epoch 4
+- - IMPORTANT: Current Total Epochs is set to 20, which will take a long time to reach. The 'test_results.png' shows up to epoch 47. 
+- Network parameters can be tuned in the 'defines_and_includes.h' file
+- Timers for every 50th batch are shown when the #define 'TIMER' in the 'defines_and_includes.h' file is set to '1'
+- - This timer is only for that specific batch, not all 50 batchers total
+             
+
+# Performance Notes:   
+- IMPORTANT: The training data is shuffled every epoch, and because of design, arrays corresponding to specific batches must be created for said batches... 
+- ... This makes the runtime slightly slower than ideal, but the CUDA computations keep the training time manageable.
+- ... As shown by the timers, shuffling/copying over the data ONCE takes 10 times the amount of time it takes for the entirety of feed forward, back prop, and updating parameters,...
+- ... which copy over values to and from device and host memory several times...
+- ... This can be optimized if I could tihnk of a better way to copy over each batch to device memory after shuffling and such
+- Each epoch, the entire training and data sets are fed into the network to assess the accuracy.
+
+
